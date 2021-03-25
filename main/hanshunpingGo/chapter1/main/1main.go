@@ -1,5 +1,11 @@
 package main
 
+import "fmt"
+
+func main() {
+	fmt.Println("hello,world!")
+}
+
 // GO 语言发展方向：1-区块链 2-服务器端（web、游戏） 3-分布式、云计算
 // GO 语言学习方法：先框架后细节  用到什么就学什么 做中学
 // 如何快速学习一个新的知识点或技术：
@@ -8,3 +14,15 @@ package main
 // GO特性：语言简洁高效，充分复用硬件多核多CPU性能，兼顾编译与运行高效
 // 发展历史 07年最初原型 -> 09-11-10google将GO开放源码 -> 2015-08-09 GO1.5发布 移除了“最后残余的C代码”
 // -> 2017-2-17 GO 1.8 -> 2017-8-24 GO 1.9 -> 2018-2-16 GO 1.10
+
+// 装环境 go sdk(Path,GOROOT,GOPATH), vscode(快捷键大全)
+// go 编译执行流程 方一：go build xxx.go -> 执行生成的文件；方二：go run xxx.go
+// 注：go build -o myhello.exe  可以指定二进制文件名
+
+// 代码风格规范：
+// 注释：行注释 // ; 块注释 /*   */  官方推荐使用行注释
+// 代码的格式化： 方一：选中后，先shift+tab整体左移，对齐后再tab键右移 方二：gofmt -w main.go
+// 运算符的两边习惯加空格
+// 一行最长不要超过80个字符，超过的换行展示
+
+// golang 官方网站；https://golang.org/  标准库API，经常查询

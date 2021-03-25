@@ -2,39 +2,63 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"sync/atomic"
 	"time"
 )
 
+type readOp struct {
+	key  int
+	resp chan int
+}
+
+type writeOp struct {
+	key  int
+	val  int
+	resp chan bool
+}
+
 func main() {
-	requests := make(chan int, 5)
-	for i := 0; i < 5; i++ {
-		requests <- i
-	}
-	close(requests)
+	var ops int64
+	reads := make(chan *readOp)
+	writes := make(chan *writeOp)
 
-	limiter := time.Tick(time.Millisecond * 200)
-	for req := range requests {
-		<-limiter
-		fmt.Println("request:", req, time.Now())
-	}
-
-	burstyLimiter := make(chan time.Time, 3)
-	for i := 0; i < 3; i++ {
-		burstyLimiter <- time.Now()
-	}
 	go func() {
-		for t := range time.Tick(time.Millisecond * 200) {
-			burstyLimiter <- t
+		var state = make(map[int]int)
+		for {
+			select {
+			case read := <-reads:
+				read.resp <- state[read.key]
+			case write := <-writes:
+				state[write.key] = write.val
+				write.resp <- true
+			}
 		}
 	}()
 
-	burstyRequests := make(chan int, 10)
-	for i := 0; i < 10; i++ {
-		burstyRequests <- i
+	for r := 0; r < 100; r++ {
+		go func() {
+			for {
+				read := &readOp{key: rand.Intn(5), resp: make(chan int)}
+				reads <- read
+				<-read.resp
+				atomic.AddInt64(&ops, 1)
+			}
+		}()
 	}
-	close(burstyRequests)
-	for req := range burstyRequests {
-		<-burstyLimiter
-		fmt.Println("request:", req, time.Now())
+
+	for w := 0; w < 10; w++ {
+		go func() {
+			for {
+				write := &writeOp{key: rand.Intn(5), val: rand.Intn(100), resp: make(chan bool)}
+				writes <- write
+				<-write.resp
+				atomic.AddInt64(&ops, 1)
+			}
+		}()
 	}
+
+	time.Sleep(time.Second)
+	opsFinal := atomic.LoadInt64(&ops)
+	fmt.Println("ops:", opsFinal)
 }
