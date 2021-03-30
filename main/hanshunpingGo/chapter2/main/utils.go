@@ -1,3 +1,3 @@
 package main
 
-var HeroName = "林冲"
+var heroName = "林冲"
