@@ -34,7 +34,7 @@ func main() {
 	return sum, suff
 }*/
 
-func test(n1 int, n2 int) (sum int, sub int) { // 支持对返回值命名，多个返回值不用再考虑顺序问题
+/*func test(n1 int, n2 int) (sum int, sub int) { // 支持对返回值命名，多个返回值不用再考虑顺序问题
 	sum = n1 + n2
 	sub = n1 - n2
 	return
@@ -46,6 +46,23 @@ func main() {
 	n2 := 8
 	sum, sub := test(n1, n2)
 	fmt.Println("sum=", sum, "sub=", sub)
+}*/
+
+func sumFunc(args ...int) (sum int) {
+	/*for i := range args { //???疑问：这个不会取最后一个值，为啥
+		fmt.Println("i=",i)
+		sum += i
+	}
+	return*/
+
+	for i := 0; i < len(args); i++ {
+		sum += args[i]
+	}
+	return
+}
+
+func main() {
+	fmt.Println("sum=", sumFunc(15))
 }
 
 //------------------------------------------------

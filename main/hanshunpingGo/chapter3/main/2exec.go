@@ -49,8 +49,25 @@ func monkeyPeach(days int, num int) int {
 	}
 }
 
+func sum(n1, n2 float32) float32 { // 这样的写法也可以
+	fmt.Printf("n1 type=%T\n", n1)
+	return n1 + n2
+}
+
+func swap(a, b *int) {
+	*a, *b = *b, *a
+}
+
 func main() {
-	fmt.Println(monkeyPeach(10, 1))
+
+	a := 10
+	b := 20
+	swap(&a, &b)
+	fmt.Println("a=", a, "b=", b)
+
+	//fmt.Println("sum=", sum(1, 2))
+
+	//fmt.Println(monkeyPeach(10, 1))
 	// 10天：1
 	// 9天：（1+1）*2 = 4
 	// 8天：（4+1）*2= 10
