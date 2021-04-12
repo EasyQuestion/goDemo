@@ -48,22 +48,22 @@ func main() {
 	fmt.Println("sum=", sum, "sub=", sub)
 }*/
 
-func sumFunc(args ...int) (sum int) {
-	/*for i := range args { //???疑问：这个不会取最后一个值，为啥
-		fmt.Println("i=",i)
-		sum += i
-	}
-	return*/
-
-	for i := 0; i < len(args); i++ {
-		sum += args[i]
-	}
-	return
+//func sumFunc(args ...int) (sum int) {
+/*for i := range args { //???疑问：这个不会取最后一个值，为啥
+	fmt.Println("i=",i)
+	sum += i
 }
+return*/
 
-func main() {
-	fmt.Println("sum=", sumFunc(15))
-}
+//	for i := 0; i < len(args); i++ {
+//		sum += args[i]
+//	}
+//	return
+//}
+//
+//func main() {
+//	fmt.Println("sum=", sumFunc(15))
+//}
 
 //------------------------------------------------
 /*func test(n int) { // 递归：自己调自己
@@ -128,6 +128,121 @@ func main() {
 	res := myFunc2(getSum, 11, 22)
 	fmt.Println("res=", res)
 }*/
+//----------------------------------------------------
+//  执行顺序：全局变量定义 -> init函数 -> main函数
+/*var age = test()
+
+func test() int {
+	fmt.Println("test()...")
+	return 90
+}
+
+// 每个源文件都包含一个Init函数，在main函数执行前被go调用
+func init() {
+	fmt.Println("init()...")
+}
+
+// 先执行的是引入包的init函数，然后是本文件的全局变量定义，本文件的init函数，本文件的main函数
+func main() {
+	fmt.Println("main()...")
+	fmt.Println(utils.Age, utils.Name)
+}*/
+
+//----------------------------------------------------------
+/*var (
+	// 全局匿名函数
+	Fun1 = func(n1, n2 int) int {
+		return n1 * n2
+	}
+)
+
+func main() {
+	// 方一：匿名函数直接调用
+	result := func(n1, n2 int) int {
+		return n1 + n2
+	}(10, 20)
+	fmt.Println("result=", result)
+
+	// 方二：将匿名函数交给变量，通过变量来实现多次调用
+	a := func(n1, n2 int) int {
+		return n1 - n2
+	}
+
+	result2 := a(20, 10)
+	fmt.Println("result2=", result2)
+
+	result3 := Fun1(4, 9)
+	fmt.Println("result3=", result3)
+}*/
+//----------------------------------------------
+// 方法体内的代码形成一个闭包
+// 闭包相当于一个类，n是字段，匿名函数是操作
+/*func AddUpper() func(int) int {
+	// 返回一个匿名函数，匿名函数引用到了函数外的n，因此这个匿名函数和n就形成一个整体，构成闭包
+	var n = 10
+	str := "hello"
+	return func(x int) int {
+		n += x
+		str += fmt.Sprintf("%d", x)
+		fmt.Println(str)
+		return n
+	}
+}
+
+// 要求：判断文件后缀名是否是以.jpg结尾，如果是就原样返回，如果不是就加上
+// 闭包的好处：普通方法也可以实现，但闭包实现可以不用多次输入后缀
+func makeSuffix(suffix string) func(string) string {
+	return func(name string) string {
+		if !strings.HasSuffix(name, suffix) {
+			name += ".jpg"
+		}
+		return name
+	}
+}
+
+func main() {
+	f := AddUpper()
+	// 当反复调用f时，由于n只初始化一次，因此每调用一次就累加一次
+	fmt.Println(f(1))
+	fmt.Println(f(2))
+	f2 := AddUpper()
+	fmt.Println(f2(2))
+	fmt.Println(f2(3))
+
+	f3 := makeSuffix(".jpg")
+	fmt.Println("处理后的文件名：", f3("window"))// window.jpg
+	fmt.Println("处理后的文件名：", f3("bird.jpg"))// bird.jpg
+
+}*/
+//----------------------------------------------------------
+// 当执行到defer语句时，会将语句先压入栈中（一个独立的栈，可以认为是defer栈）
+// 等函数执行完毕后，再从defer栈，按照先入后出的方式出栈，执行语句
+/*func sumDefer(n1 int, n2 int) int {
+	defer fmt.Println("ok1 n1=", n1)
+	defer fmt.Println("ok2 n2=", n2)
+	n1++
+	n2++
+	res := n1 + n2
+	fmt.Println("ok3 res=", res)
+	return res
+}
+
+func main() {
+	res := sumDefer(10, 20)
+	fmt.Println("res=", res)
+}
+*/
+//----------------------------------------------------------------
+// 全局变量：可以全局定义变量，也可以全局初始化一个变量，但是不能有赋值语句
+var name string
+// 全局变量使用陷阱，不能这样使用
+// := 相当于2个语句 1)var Name string  2)Name = "jack"  1)可以编译通过，但2)不能编译通过
+//name = "tome"
+//Name := "jack"
+func main() {
+	fmt.Println("name=", name)
+	//fmt.Println("Name=",Name)
+}
 
 /* 函数的基本语法
 func 函数名（形参列表）（返回值列表）{
@@ -168,5 +283,37 @@ args类型是slice切片
 /*基本语法
 type 自定义数据类型名 数据类型
 */
+
+// init初始化函数
+//  每个源文件都包含一个Init函数，在main函数执行前被go调用
+//  通常可以在init函数中完成初始化的工作
+//  执行顺序：全局变量定义 -> init函数 -> main函数
+//  当引入其它包文件变量时，先是引入包内的全局变量定义->引入包的init函数-> 本包内的init函数 -> 本包的main函数
+
+// 匿名函数
+// 使用方式：1.定义时直接使用 2.将匿名函数交给一个变量（函数变量），通过变量来调用
+// 如果将匿名函数交给一个全局变量，那么这个匿名函数就成为一个全局匿名函数，可以在整个程序有效
+
+// 闭包：一个函数与其相关的引用环境组合的一个整体（实体）
+// 返回一个匿名函数，匿名函数引用到了函数外的n，因此这个匿名函数和n就形成一个整体，构成闭包
+// 闭包相当于一个类，n是字段，匿名函数是操作
+// 闭包的关键：返回的函数和它引用到的变量，两者共同构成了闭包
+
+// defer关键字：延时机制
+// 创建资源（数据库连接、文件句柄、锁等），为了在函数执行完毕后，及时释放资源，GO的设计者提供defer(延时机制)
+// 当执行到defer语句时，会将语句先压入栈中（一个独立的栈，可以认为是defer栈）此时可以继续使用相关的资源
+// 等函数执行完毕后，再从defer栈，按照先入后出的方式出栈，执行defer语句
+// 入栈时，会将相关的值拷贝同时入栈，所以要注意
+// 这样，程序员就不用再烦恼什么时候关闭资源了
+
+// 函数的参数传递方式（值传递、引用传递）重点
+// 一般来说引用传递效率高些，因为传的是地址，数据量小，而值拷贝取决于数据大小（比如数组，结构体），要拷贝的数据越大，效率越低
+// 如果要修改原变量的值，需要用指针&
+
+// 变量作用域
+// 1.在函数内定义或声明的变量，作用域在函数内
+// 2.函数外定义或声明的变量，作用域在整个包有效，如果其首字母大写，则作用域在整个程序有效
+// 3.如果变量是在代码块，如if/for/switch中，那么变量作用域就在该代码块
+// 全局变量：可以全局定义变量，也可以全局初始化一个变量，但是不能有赋值语句
 
 // 函数 vs 方法
