@@ -57,7 +57,7 @@ import "fmt"
 	fmt.Println("slice=", slice)
 }*/
 
-func main() {
+/*func main() {
 	slice := []int{1, 2, 3, 4, 5}
 	slice2 := make([]int, 1)
 	fmt.Println("slice2=", slice2)
@@ -66,6 +66,58 @@ func main() {
 	slice[0] = 10
 	fmt.Println("slice=", slice)
 	fmt.Println("slice2=", slice2)
+}*/
+//---------------------------------------------------
+/*func main() {
+	str := "hello@atguigu"
+	slice := str[6:]
+	fmt.Println("slice=", slice)
+
+	//str[0] = 'z'// 编译不通过，不能这样修改
+	strArr := []byte(str)
+	strArr[0] = 'z'
+	str = string(strArr)
+	fmt.Println("str=", str)
+	strArr2 := []rune(str)
+	strArr2[0] = '北'
+	str = string(strArr2)
+	fmt.Println("str=", str)
+}*/
+//----------------------------------------------------------
+func nfb(n int, arr []uint64) {
+	if n > 1 {
+		nfb(n-1, arr)
+	}
+	if n == 1 || n == 2 {
+		arr[n-1] = 1
+	} else {
+		arr[n-1] = arr[n-3] + arr[n-2]
+	}
+}
+
+func nfb2(n int) []uint64 {
+	arr := make([]uint64, n)
+	for i := 0; i < n; i++ {
+		if i == 0 || i == 1 {
+			arr[i] = 1
+		} else {
+			arr[i] = arr[i-2] + arr[i-1]
+		}
+	}
+	return arr
+}
+
+func main() {
+	// 编写一个函数nfb(n int),返回一个含有n个元素的斐波那契数的切片
+	// 考虑到元素的值会越来越大，用一个比较大的类型来存值 uint64
+	var n int
+	fmt.Println("请输入一个整数：")
+	fmt.Scanln(&n)
+	arr := make([]uint64, n)
+	//nfb(n, arr)
+	//fmt.Println("arr=", arr)
+	arr = nfb2(n)
+	fmt.Println("arr=", arr)
 }
 
 // slice切片：个数可变
@@ -105,3 +157,8 @@ func main() {
 //                拷贝时，2个切片的数据空间是相互独立的，互不影响
 //                2个切片的长度可以不一致
 // 8.切片是引用类型，在进行传递时遵循引用传递的机制
+
+// string与slice的关系：
+// string本质是一个切片，底层引用的是[]byte数组，因此也可以进行切片处理
+// 但是string是不可变的， 不能通过str[0]='z'来修改元素的值
+// 如果要修改str，必须用[]rune(处理中文)或者[]byte来转换再处理，再重新赋值给str
