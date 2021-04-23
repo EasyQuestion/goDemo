@@ -1,8 +1,6 @@
 package main
 
-import "fmt"
-
-type Usb interface {
+/*type Usb interface {
 	Start()
 	Stop()
 }
@@ -36,7 +34,7 @@ func main() {
 	usbArr[1] = Phone{"小米"}
 	usbArr[2] = Camera{"尼康"}
 	fmt.Println(usbArr)
-}
+}*/
 
 //----------------------------------------------------
 /*type A struct {
@@ -213,4 +211,4 @@ func main() {
 // 为了保证代码的简洁性，建议尽量不使用多重继承
 
 // 3)多态：用统一的接口来调用不同的变量类型，实现了多种形态
-// 多态的体现：1-多态参数：接口interface是入参，2-多态数组：
+// 多态的体现：1-多态参数：接口interface是入参，2-多态数组：数组的类型是接口
