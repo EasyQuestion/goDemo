@@ -2,6 +2,13 @@ package main
 
 import "fmt"
 
+func main() {
+	// for(i:=0,j:=100;i<j; i++,j--){  这样的写法不行，必须用平行赋值的方式进行
+	for i, j := 0, 100; i < j; i, j = i+1, j-1 {
+		fmt.Println(i, j)
+	}
+}
+
 //func main() {
 
 /*for i := 1; i <= 10; i++ {
@@ -74,7 +81,7 @@ label2:
 	}
 }*/
 //-------------------------------------------------------
-func main() {
+/*func main() {
 	n := 10 // 30
 	fmt.Println("ok1")
 	if n > 20 {
@@ -87,7 +94,7 @@ func main() {
 label1:
 	fmt.Println("ok6")
 	fmt.Println("ok7")
-}
+}*/
 
 // for循环
 // 基本语法
@@ -115,3 +122,5 @@ for 变量初始化;循环条件;变量值迭代 {
 // 汇编语言用goto比较多，高级语言用的比较少
 
 // return 表示跳出所在的方法或函数
+
+// for循环不支持以逗号为间隔的多个赋值语句,必须使用平行赋值的方式来初始化多个变量

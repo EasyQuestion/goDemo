@@ -2,7 +2,42 @@ package main
 
 import "fmt"
 
-type Student struct{}
+// 总结：当带有类型断言的方法调用时，指针可以自动解引用，但是对象不能自动转换成指针
+func main() {
+	var a Integer = 1
+	var b Integer = 2
+	var i interface{} = &a
+	sum := i.(*Integer).Add(b)
+	fmt.Println(sum)
+}
+
+// 有2种方式，方一：
+/*type Integer int
+func (a Integer) Add(b Integer) Integer {
+	return a + b
+}*/
+
+// 有2种方式，方二：
+type Integer int
+func (a *Integer) Add(b Integer) Integer {
+	return *a + b
+}
+
+/*func main() {
+	var a Integer = 1
+	var b Integer = 2
+	var i interface{} = a
+	sum := i.(Integer).Add(b)
+	fmt.Println(sum)
+}
+
+type Integer int
+func (a Integer) Add(b Integer) Integer {
+	return a + b
+}*/
+
+//------------------------------------------------------------------
+/*type Student struct{}
 
 func TypeJudge(params ...interface{}) {
 	for i, v := range params {
@@ -36,7 +71,7 @@ func main() {
 	address := "12#3-301"
 	stu := Student{}
 	TypeJudge(n1, n2, n3, name, isPassed, address, nil, stu, &stu)
-}
+}*/
 
 //------------------------------------------------------
 /*type Usb interface {
@@ -129,3 +164,5 @@ func main() {
 // 类型断言 语法： b = a.(Point)
 // 带检测的类型断言：b, ok := a.(float32)
 // 类型判断 switch v.(type)
+
+// 总结：当带有类型断言的方法调用时，指针可以自动解引用，但是对象不能自动转换成指针

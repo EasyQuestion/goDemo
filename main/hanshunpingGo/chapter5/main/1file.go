@@ -98,6 +98,7 @@ func main() {
 //----------------------------------------------------------
 /*func main() {
 	// 一次性将文件复制到另一个文件中
+	// 如果多次复制，会覆盖原有内容，造成原本内容丢失
 	sourceFilePath := "d:/abc.txt"
 	targetFilePath := "d:/test/kkk.txt"
 

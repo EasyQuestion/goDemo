@@ -2,9 +2,18 @@ package main
 
 import "fmt"
 
-func main() {
+/*func main() {
 	fmt.Println("hello,world!")
+}*/
+//------------------------------
+func main() {
+	i := 1
+	s := []string{"A", "B", "C"}
+	i, s[i-1] = 2, "Z"  // 这种写法也叫平行赋值
+	// 这里输出的 s: [Z,B,C] 而不是s: [A,Z,C]。 这是因为等号左边的切片的索引表达式i-1会被先计算，最后才是赋值。
+	fmt.Printf("s: %v \n", s)
 }
+
 
 // GO 语言发展方向：1-区块链 2-服务器端（web、游戏） 3-分布式、云计算
 // GO 语言学习方法：先框架后细节  用到什么就学什么 做中学

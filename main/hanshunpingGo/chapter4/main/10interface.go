@@ -1,11 +1,31 @@
 package main
 
-import (
-	"fmt"
-	"math/rand"
-	"sort"
-)
+import "fmt"
 
+type TransInfo struct {}
+type Fragment interface {
+	Exec(transInfo *TransInfo) error
+}
+type GetPodAction struct {
+}
+func (g GetPodAction) Exec(transInfo *TransInfo) error {
+	//...
+	return nil
+}
+
+func main() {
+	var fragment1 Fragment = new(GetPodAction)
+	fmt.Println(fragment1) // &{}
+
+	var fragment2 Fragment = &GetPodAction{}
+	fmt.Println(fragment2) // &{}
+
+	var fragment3 Fragment = GetPodAction{}
+	fmt.Println(fragment3) // {}
+
+}
+//-------------------------------------------------
+/*
 type Mon struct {
 	Name string
 	Age  int
@@ -41,8 +61,8 @@ func main() {
 	for _, v := range ms {
 		fmt.Println(v)
 	}
-}
-
+}*/
+//---------------------------------------------------
 /*type Usb interface {
 	Say()
 }
