@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	// for(i:=0,j:=100;i<j; i++,j--){  这样的写法不行，必须用平行赋值的方式进行
+	// for i:=0,j:=100;i<j; i++,j-- {  这样的写法不行，必须用平行赋值的方式进行
 	for i, j := 0, 100; i < j; i, j = i+1, j-1 {
 		fmt.Println(i, j)
 	}
